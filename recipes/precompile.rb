@@ -8,7 +8,7 @@ node[:deploy].each do |application, deploy|
     cwd current_path
     user 'deploy'
     command 'bundle exec rake assets:precompile'
-    environment 'RAILS_ENV' => rails_env
+    environment deploy[:environment].to_hash
   end
 
 end
