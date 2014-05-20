@@ -1,13 +1,6 @@
-node[:deploy].each do |application, deploy|
-  rails_env = deploy[:rails_env]
-  current_path = deploy[:current_path]
+if node[:opsworks][:instance][:layers].include?('rails-app')
 
-  Chef::Log.info("Precompiling Rails assets with environment #{rails_env}")
+  include_recipe "opsworks-rails-precompile::precompile"
+  include_recipe "opsworks-rails-precompile::restart_command"
 
-  execute 'rake assets:precompile' do
-    cwd current_path
-    user 'deploy'
-    command 'bundle exec rake assets:precompile'
-    environment 'RAILS_ENV' => rails_env
-  end
 end
